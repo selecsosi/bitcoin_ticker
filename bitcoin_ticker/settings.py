@@ -83,4 +83,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+BROKER_URL = ''
+CELERY_RESULT_BACKEND = ''
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 43200}
+
 from settings_local import *
