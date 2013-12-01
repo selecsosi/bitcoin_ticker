@@ -51,7 +51,7 @@ class ExchangeEndpoint(models.Model):
 
     exchange = models.ForeignKey(Exchange)
     currency = models.ForeignKey(Currency)
-    quote_types = models.ManyToManyField(QuoteType, blank=True, null=True, related_name="+")
+    supported_quote_types = models.ManyToManyField(QuoteType, blank=True, null=True, related_name="+")
     name = models.CharField(max_length=256, verbose_name="Endpoint Name", null=False, blank=False)
     path_url = models.CharField(max_length=256, null=False, blank=False, verbose_name="Exchange Endpoint Path")
     fetch_interval = models.IntegerField(max_length=8, verbose_name="Interval Value", blank=False, null=False, default=15)
@@ -67,10 +67,12 @@ class ExchangeEndpoint(models.Model):
 
 
 class Quote(models.Model):
-    quote_type = models.ForeignKey(QuoteType)
-    price = models.DecimalField(max_digits=16, decimal_places=8, blank=False, null=False)
     exchange_endpoint = models.ForeignKey(ExchangeEndpoint)
-    currency = models.ForeignKey(Currency)
+    quote_type = models.ForeignKey(QuoteType)
+    from_currency = models.ForeignKey(Currency, related_name="from_currency")
+    to_currency = models.ForeignKey(Currency, related_name="to_currency")
+    quantity = models.DecimalField(max_digits=16, decimal_places=8, blank=False, null=True, default=None)
+    price = models.DecimalField(max_digits=16, decimal_places=8, blank=False, null=True, default=None)
     exchange_timestamp = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

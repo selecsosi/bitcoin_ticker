@@ -3,20 +3,17 @@ __author__ = 'sam'
 
 class BaseExchangeParser(object):
 
-    endpoint = None
+    exchange_endpoint = None
 
-    def get_quote(self):
+    def __init__(self, exchange_endpoint):
+        self.exchange_endpoint = exchange_endpoint
+        self.quote_types = { x.name: x  for x in self.exchange_endpoint.quote_types.all()}
+
+    def parse_quote(self):
         raise NotImplementedError("Subclass must implement {}"
-            .format(self.get_quote.__name__))
+            .format(self.parse_quote.__name__))
 
 
 class MtGoxExchangeParser(BaseExchangeParser):
-
-
-
-
-
     pass
-
-
 
