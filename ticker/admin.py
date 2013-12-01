@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from ticker.models import Exchange, Currency, ExchangeEndpoint, QuoteType, Quote
+from ticker.models import Exchange, Currency, ExchangeEndpoint, QuoteType, Quote, ExchangeEndpointParser
 
 
 class ExchangeAdmin(admin.ModelAdmin):
@@ -28,3 +28,8 @@ class QuoteAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Quote, QuoteAdmin)
+
+class ExchangeEndpointParserAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ExchangeEndpointParser, ExchangeEndpointParserAdmin)

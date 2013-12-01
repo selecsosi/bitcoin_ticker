@@ -1,3 +1,5 @@
+from ticker.quotes.parsers import MtGoxExchangeMoneyFastTickerParser
+
 __author__ = 'sam'
 import requests
 import gzip
@@ -5,49 +7,36 @@ import io
 import json
 
 class BaseRequestClient(object):
-    pass
-
-
-class QuoteRequestClient(object):
-
-
-    def __init__(self, exchange, exhange_endpoint, quote_type):
-        self.parser = self.get_exchange_parser(exhange_endpoint)
-
-    def get_endpoint(self):
-        pass
 
     def get_exchange_parser(self, exhchange_endpoint):
-        pass
+        raise NotImplementedError("")
 
 
+class QuoteRequestClient(BaseRequestClient):
 
-class MtGoxQuoteRequestClient(QuoteRequestClient):
+    def __init__(self, exhange_endpoint):
+        self.exchange_endpoint = exhange_endpoint
+        self.parser = self.get_exchange_parser(exhange_endpoint)
 
-    def sign_request(self, request):
-        headers = {
-            'User-Agent': "Trade-Bot",
-            'Accept-Encoding': 'GZIP',
-        }
+    def request_exchange_quotes(self):
+        base_url = self.exchange_endpoint.exchange.base_url
+        path_url = self.exchange_endpoint.path_url
 
-    def get_quote(self):
-        #make the request
-
-        #parse the request
-        response = requests.get("")
-        x = {}
-        enc = response.headers.get('Content-Encoding')
-        if isinstance(enc, str) and enc.lower() == 'gzip':
-            buff = io.BytesIO(response.content)
-            response = gzip.GzipFile(fileobj=buff)
-
-        output = json.load(response)
-
-
-    def parse_response(self, response_json):
-        new_quote_list = self.parser.parse(response_json)
-
-
-
+        response = requests.get(base_url + path_url)
+        return self.parse_response(response.text)
+        
     def get_endpoint(self):
-        pass
+        return self.exchange_endpoint
+
+
+    def parse_response(self, response):
+        return self.get_exchange_parser().parse_response(response)
+
+
+class MtGoxExchangeMoneyFastTickerClient(QuoteRequestClient):
+
+    def __init__(self, exhange_endpoint):
+        super(MtGoxExchangeMoneyFastTickerClient, self).__init__(exhange_endpoint)
+
+    def get_exchange_parser(self, exhchange_endpoint):
+        return MtGoxExchangeMoneyFastTickerParser(exhchange_endpoint)
