@@ -16,9 +16,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')5znrdw6y0qvy&^$jbz#rbu5v$6ah8v4l31cf#57rn^^=rn&j%'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,7 +34,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
-    'api',
+    'tastypie',
+    'ticker',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,5 +84,8 @@ STATIC_URL = '/static/'
 BROKER_URL = ''
 CELERY_RESULT_BACKEND = ''
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 43200}
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_DISABLE_RATE_LIMITS = True
+
 
 from settings_local import *

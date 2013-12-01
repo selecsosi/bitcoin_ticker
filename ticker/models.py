@@ -33,5 +33,3 @@ class Quote(models.Model):
     currency = models.ForeignKey(Currency)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-
-
