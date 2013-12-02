@@ -1,0 +1,10 @@
+{% extends "site_base.html" %}
+{% load nvd3_tags %}
+
+{% block head_block %}
+    {{ block.super }}
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    {% include_chart_jscss %}
+    {% load_chart charttype chartdata chartcontainer extra %}
+{% endblock head_block %}
+

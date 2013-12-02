@@ -1,0 +1,8 @@
+{% extends "ticker/base.html" %}
+{% load nvd3_tags %}
+
+{% block content_block %}
+    <h1>Quotes</h1>
+    {% include_container chartcontainer 800 800 %}
+
+{% endblock content_block %}

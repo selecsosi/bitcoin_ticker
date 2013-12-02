@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+APPLICATION_DIR = os.path.dirname(globals()['__file__'])
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -36,6 +42,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'south',
     'tastypie',
+    'djangobower',
+    'django_nvd3',
     'ticker',
 )
 
@@ -76,11 +84,42 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = (
+    '/Users/sam/workspace/bitcoin_ticker/templates/',
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/Users/sam/workspace/bitcoin_ticker/static/'
+STATICFILES_DIRS = (
+    '/Users/sam/workspace/bitcoin_ticker/components/',
+)
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'djangobower.finders.BowerFinder',
+)
+
+# STATIC_FINDERS = (
+#     'djangobower.finders.BowerFinder',
+# )
+
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
+
+BOWER_PATH = '/usr/local/bin/bower'
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'underscore',
+    'd3',
+    'nvd3',
+)
 
 BROKER_URL = ''
 CELERY_RESULT_BACKEND = ''

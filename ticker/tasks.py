@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from celery.task import PeriodicTask
 from .models import Exchange, ExchangeEndpoint
-from .quotes.client import MtGoxExchangeMoneyFastTickerClient, MtGoxExchangeMoneyTickerClient
+from .api.client import MtGoxExchangeMoneyFastTickerClient, MtGoxExchangeMoneyTickerClient
 
 class MtGoxExchangeMoneyFastTickerTask(PeriodicTask):
     run_every = timedelta(minutes=1)
