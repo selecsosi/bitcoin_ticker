@@ -5,6 +5,7 @@ from tastypie.authorization import Authorization
 from tastypie.paginator import Paginator
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.cache import SimpleCache
 
 from ..models import Quote, QuoteType
 
@@ -26,6 +27,8 @@ class QuoteTypeResource(ModelResource):
         queryset = QuoteType.objects.all()
         resource_name = 'quote_types'
         filtering = {'name': ('exact') }
+        allowed_methods = ['get']
+        cache = SimpleCache(timeout=60)
         serializer = PrettyJSONSerializer()
 
 
@@ -54,4 +57,5 @@ class QuoteResource(ModelResource):
         paginator_class = Paginator
         serializer = PrettyJSONSerializer()
         allowed_methods = ['get']
+        cache = SimpleCache(timeout=60)
         # authorization= Authorization()

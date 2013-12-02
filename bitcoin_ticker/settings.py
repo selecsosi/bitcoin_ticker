@@ -26,7 +26,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', ]
+ALLOWED_HOSTS = ['127.0.0.1', '0,0,0,0',]
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'south',
     'tastypie',
+    'tastypie_swagger',
     'djangobower',
     'django_nvd3',
     'ticker',
@@ -124,5 +125,6 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 43200}
 CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 CELERY_DISABLE_RATE_LIMITS = True
 
+TASTYPIE_SWAGGER_API_MODULE = 'bitcoin_ticker.urls.api'
 
 from settings_local import *

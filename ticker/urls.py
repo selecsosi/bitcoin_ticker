@@ -10,6 +10,8 @@ v1_api.register(QuoteResource())
 
 urlpatterns = patterns('',
     url(r'^quotes/mtgox/', 'ticker.views.quotes'),
+    url(r'^api/doc/', include('tastypie_swagger.urls', namespace='tastypie_swagger')),
     url(r'^api/', include(v1_api.urls)),
+
 )
 

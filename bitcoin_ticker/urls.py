@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 
+from ticker.urls import v1_api as api
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
