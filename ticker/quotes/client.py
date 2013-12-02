@@ -1,4 +1,4 @@
-from ticker.quotes.parsers import MtGoxExchangeMoneyFastTickerParser
+from .parsers import MtGoxExchangeMoneyFastTickerParser, MtGoxExchangeMoneyTickerParser
 
 __author__ = 'sam'
 import requests
@@ -30,7 +30,7 @@ class QuoteRequestClient(BaseRequestClient):
 
 
     def parse_response(self, response):
-        return self.get_exchange_parser().parse_response(response)
+        return self.parser.parse_response(response)
 
 
 class MtGoxExchangeMoneyFastTickerClient(QuoteRequestClient):
@@ -40,3 +40,12 @@ class MtGoxExchangeMoneyFastTickerClient(QuoteRequestClient):
 
     def get_exchange_parser(self, exhchange_endpoint):
         return MtGoxExchangeMoneyFastTickerParser(exhchange_endpoint)
+
+
+class MtGoxExchangeMoneyTickerClient(QuoteRequestClient):
+
+    def __init__(self, exhange_endpoint):
+        super(MtGoxExchangeMoneyTickerClient, self).__init__(exhange_endpoint)
+
+    def get_exchange_parser(self, exhchange_endpoint):
+        return MtGoxExchangeMoneyTickerParser(exhchange_endpoint)

@@ -1,8 +1,9 @@
 import json
-from ticker.models import Quote
-
-__author__ = 'sam'
-
+from datetime import datetime
+import pytz
+from django.conf import settings
+from ..models import Quote
+from django.utils import timezone
 
 class BaseExchangeParser(object):
 
@@ -10,7 +11,7 @@ class BaseExchangeParser(object):
 
     def __init__(self, exchange_endpoint):
         self.exchange_endpoint = exchange_endpoint
-        self.quote_types = { x.name: x  for x in self.exchange_endpoint.quote_types.all()}
+        self.quote_types = { x.name: x  for x in self.exchange_endpoint.supported_quote_types.all()}
 
     def parse_response(self, response):
         """
@@ -23,11 +24,13 @@ class MtGoxExchangeMoneyFastTickerParser(BaseExchangeParser):
     def parse_response(self, response_json):
         model = json.loads(response_json)
         quote_list = []
-        if issubclass(model, dict):
+        if isinstance(model, dict):
             if model["result"] == "success":
-                now = 0
+                local_tz = pytz.timezone(settings.TIME_ZONE)
+                timestamp_dt = timezone.now()
                 if "now" in model:
-                    now = model["now"]
+                    timestamp = model["now"]
+                    timestamp_dt = datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
                 if "data" in model:
                     data = model["data"]
                     for key in data.keys():
@@ -39,10 +42,41 @@ class MtGoxExchangeMoneyFastTickerParser(BaseExchangeParser):
                             quote.from_currency = self.exchange_endpoint.from_currency
                             quote.to_currency = self.exchange_endpoint.to_currency
                             quote.price = data[key].get("value", 0)
-                            quote.exchange_timestamp = now
+                            quote.exchange_timestamp = timestamp_dt
                             quote_list.append(quote)
 
         return quote_list
 
 
+class MtGoxExchangeMoneyTickerParser(BaseExchangeParser):
 
+    quantity_quote_keys = ('vol', )
+
+    def parse_response(self, response_json):
+        model = json.loads(response_json)
+        quote_list = []
+        if isinstance(model, dict):
+            if model["result"] == "success":
+                local_tz = pytz.timezone(settings.TIME_ZONE)
+                timestamp_dt = timezone.now()
+                if "now" in model:
+                    timestamp = model["now"]
+                    timestamp_dt = datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
+                if "data" in model:
+                    data = model["data"]
+                    for key in data.keys():
+                        if key in self.quote_types:
+                            quote_type = self.quote_types[key]
+                            quote = Quote()
+                            quote.quote_type = quote_type
+                            quote.exchange_endpoint = self.exchange_endpoint
+                            quote.from_currency = self.exchange_endpoint.from_currency
+                            quote.to_currency = self.exchange_endpoint.to_currency
+                            if key in self.quantity_quote_keys:
+                                quote.quantity = data[key].get("value", 0)
+                            else:
+                                quote.price = data[key].get("value", 0)
+                            quote.exchange_timestamp = timestamp_dt
+                            quote_list.append(quote)
+
+        return quote_list

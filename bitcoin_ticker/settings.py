@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'south',
     'tastypie',
     'ticker',
@@ -84,7 +85,7 @@ STATIC_URL = '/static/'
 BROKER_URL = ''
 CELERY_RESULT_BACKEND = ''
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 43200}
-CELERY_ACCEPT_CONTENT = ['json']
+CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 CELERY_DISABLE_RATE_LIMITS = True
 
 
