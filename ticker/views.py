@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 import calendar
 
 from ticker.models import Quote
-import itertools
+
 
 def quotes(request):
     ql_sell = Quote.objects.filter(quote_type__name="sell").order_by('-modified')[:500]
@@ -13,12 +13,8 @@ def quotes(request):
     ydata1 = [float(x.price) for x in ql_sell]
     ydata2 = [float(x.price) for x in ql_buy]
 
-
-
-
-
     tooltip_date = "%d %b %Y %H:%M:%S %p"
-    extra_serie = {"tooltip": {"y_start": "$ ", "y_end": ""},
+    extra_serie = {"tooltip": {"y_start": ql_sell[0].to_currency.symbol, "y_end": ""},
                     "date_format": tooltip_date}
 
     chartdata = {
@@ -39,7 +35,6 @@ def quotes(request):
             'tag_script_js': True,
             'jquery_on_ready': False,
         },
-        'kill_everythin': x_sell_data,
     }
 
     return render_to_response('ticker/quotes.html', data)

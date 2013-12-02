@@ -9,7 +9,7 @@ v1_api.register(QuoteTypeResource())
 v1_api.register(QuoteResource())
 
 urlpatterns = patterns('',
-    url(r'^quotes/', 'ticker.views.quotes'),
+    url(r'^quotes/mtgox/', 'ticker.views.quotes'),
     url(r'^api/', include(v1_api.urls)),
 )
 
