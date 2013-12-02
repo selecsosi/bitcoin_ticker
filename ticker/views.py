@@ -23,8 +23,8 @@ def quotes(request):
         'name2': 'buy', 'y2': ydata2, 'extra2': extra_serie,
     }
 
-    charttype = "lineChart"
-    chartcontainer = 'linechart_container'  # container name
+    charttype = "lineWithFocusChart"
+    chartcontainer = 'linewithfocuschart_container'  # container name
     data = {
         'charttype': charttype,
         'chartdata': chartdata,
