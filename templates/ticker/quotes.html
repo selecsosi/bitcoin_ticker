@@ -1,8 +1,15 @@
 {% extends "ticker/base.html" %}
 {% load nvd3_tags %}
 
+{% block head_block %}
+    {{ block.super }}
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+{#    <link media="all" href="/static/nvd3/nv.d3.css" type="text/css" rel="stylesheet">#}
+    {% include_chart_jscss %}
+    {% load_chart charttype chartdata chartcontainer extra %}
+{% endblock head_block %}
+
 {% block content_block %}
     <h1>Quotes</h1>
     {% include_container chartcontainer 800 800 %}
-
 {% endblock content_block %}

@@ -18,7 +18,6 @@ PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), ".."),
 )
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -93,9 +92,7 @@ TEMPLATE_DIRS = (
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/Users/sam/workspace/bitcoin_ticker/static/'
-STATICFILES_DIRS = (
-    '/Users/sam/workspace/bitcoin_ticker/components/',
-)
+
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -110,7 +107,7 @@ STATICFILES_FINDERS = (
 #     'djangobower.finders.BowerFinder',
 # )
 
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components/')
 
 BOWER_PATH = '/usr/local/bin/bower'
 

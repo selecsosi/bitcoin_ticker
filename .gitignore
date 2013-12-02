@@ -40,3 +40,4 @@ nosetests.xml
 *.ipynb
 .ipynb_checkpoints/
 celerybeat-schedule
+bower.json

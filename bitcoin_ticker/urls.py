@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -10,3 +11,7 @@ urlpatterns = patterns('',
     url(r'^ticker/', include('ticker.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
+
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()
