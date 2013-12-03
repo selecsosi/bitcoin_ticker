@@ -1,3 +1,5 @@
+from ticker.api.pagers import EstimatedCountPaginator
+
 __author__ = 'sam'
 
 from tastypie.resources import ModelResource
@@ -28,7 +30,8 @@ class QuoteTypeResource(ModelResource):
         resource_name = 'quote_types'
         filtering = {'name': ('exact') }
         allowed_methods = ['get']
-        cache = SimpleCache(timeout=60)
+        cache = SimpleCache(timeout=5)
+        paginator_class = EstimatedCountPaginator
         serializer = PrettyJSONSerializer()
 
 
@@ -54,8 +57,8 @@ class QuoteResource(ModelResource):
         queryset = Quote.objects.all().order_by('-modified')
         resource_name = 'quotes'
         filtering = { 'quote_type': ALL_WITH_RELATIONS }
-        paginator_class = Paginator
+        paginator_class = EstimatedCountPaginator
         serializer = PrettyJSONSerializer()
         allowed_methods = ['get']
-        cache = SimpleCache(timeout=60)
+        cache = SimpleCache(timeout=5)
         # authorization= Authorization()
