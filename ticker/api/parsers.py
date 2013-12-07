@@ -102,7 +102,7 @@ class BitstampExchangeTickerParser(BaseExchangeParser):
             # local_tz = pytz.timezone(settings.TIME_ZONE)
             timestamp_dt = timezone.now()
             if "timestamp" in model:
-                timestamp = model.pop("timestamp")
+                timestamp = float(model.pop("timestamp"))
                 timestamp_dt = datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
 
             for key in model.keys():
