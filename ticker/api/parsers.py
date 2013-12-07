@@ -51,7 +51,7 @@ class MtGoxExchangeMoneyFastTickerParser(BaseExchangeParser):
 
 class MtGoxExchangeMoneyTickerParser(BaseExchangeParser):
 
-    quantity_quote_keys = ('vol', )
+    quantity_quote_keys = ('vol', 'vol_cur')
 
     def parse_response(self, response_json):
         model = json.loads(response_json)
@@ -123,3 +123,38 @@ class BitstampExchangeTickerParser(BaseExchangeParser):
                     quote_list.append(quote)
 
         return quote_list
+
+class Btc_eExchangeBtcUsdTickerParser(BaseExchangeParser):
+
+    quantity_quote_keys = ('vol', 'vol_cur')
+
+    def parse_response(self, response_json):
+        model = json.loads(response_json)
+        quote_list = []
+        if isinstance(model, dict):
+            if "ticker" in model:
+                model = model["ticker"]
+                local_tz = pytz.timezone(settings.TIME_ZONE)
+                timestamp_dt = timezone.now()
+                if "updated" in model:
+                    timestamp = model["updated"]
+                    timestamp_dt = datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
+
+                for key in model.keys():
+                    if key in self.quote_types:
+                        quote_type = self.quote_types[key]
+                        quote = Quote()
+                        quote.quote_type = quote_type
+                        quote.exchange_endpoint = self.exchange_endpoint
+                        quote.from_currency = self.exchange_endpoint.from_currency
+                        quote.to_currency = self.exchange_endpoint.to_currency
+                        if key in self.quantity_quote_keys:
+                            quote.quantity = model[key]
+                        else:
+                            quote.price = model[key]
+                        quote.exchange_timestamp = timestamp_dt
+                        quote_list.append(quote)
+
+        return quote_list
+
+

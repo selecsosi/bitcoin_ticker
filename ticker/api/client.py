@@ -1,5 +1,5 @@
 from .parsers import MtGoxExchangeMoneyFastTickerParser, MtGoxExchangeMoneyTickerParser
-from ticker.api.parsers import BitstampExchangeTickerParser
+from ticker.api.parsers import BitstampExchangeTickerParser, Btc_eExchangeTickerParser
 
 __author__ = 'sam'
 import requests
@@ -55,3 +55,9 @@ class BitstampExchangeTickerClient(QuoteRequestClient):
 
     def get_exchange_parser(self, exhchange_endpoint):
         return BitstampExchangeTickerParser(exhchange_endpoint)
+
+
+class Btc_eExchangeBtcUsdQuoteClient(QuoteRequestClient):
+
+    def get_exchange_parser(self, exhchange_endpoint):
+        return Btc_eExchangeBtcUsdQuoteClient(exhchange_endpoint)
