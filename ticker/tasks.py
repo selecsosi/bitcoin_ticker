@@ -29,3 +29,14 @@ class MtGoxExchangeMoneyTickerTask(PeriodicTask):
             quote.save()
 
 
+class BitstampExchangeTickerTask(PeriodicTask):
+    run_every = timedelta(minutes=5)
+
+    def run(self, **kwargs):
+        exchange = Exchange.objects.get(name="Bitstamp")
+        ee = ExchangeEndpoint.objects.get(exchange=exchange, name="Ticker")
+        mgerc = MtGoxExchangeMoneyTickerClient(ee)
+        quote_list = mgerc.request_exchange_quotes()
+        for quote in quote_list:
+            quote.save()
+

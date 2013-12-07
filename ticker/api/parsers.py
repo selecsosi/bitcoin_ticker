@@ -80,3 +80,44 @@ class MtGoxExchangeMoneyTickerParser(BaseExchangeParser):
                             quote_list.append(quote)
 
         return quote_list
+
+class BitstampExchangeTickerParser(BaseExchangeParser):
+
+    key_map = {
+        "high": "high",
+        "last": "last",
+        "timestamp": "timestamp",
+        "bid": "buy",
+        "low": "low",
+        "ask": "sell",
+    }
+
+
+    quantity_quote_keys = ('vol', )
+
+    def parse_response(self, response_json):
+        model = json.loads(response_json)
+        quote_list = []
+        if isinstance(model, dict):
+            # local_tz = pytz.timezone(settings.TIME_ZONE)
+            timestamp_dt = timezone.now()
+            if "timestamp" in model:
+                timestamp = model.pop("timestamp")
+                timestamp_dt = datetime.fromtimestamp(timestamp, tz=timezone.get_current_timezone())
+
+            for key in model.keys():
+                if self.key_map[key] in self.quote_types:
+                    quote_type = self.quote_types[self.key_map[key]]
+                    quote = Quote()
+                    quote.quote_type = quote_type
+                    quote.exchange_endpoint = self.exchange_endpoint
+                    quote.from_currency = self.exchange_endpoint.from_currency
+                    quote.to_currency = self.exchange_endpoint.to_currency
+                    if key in self.quantity_quote_keys:
+                        quote.quantity = model[key]
+                    else:
+                        quote.price = model[key]
+                    quote.exchange_timestamp = timestamp_dt
+                    quote_list.append(quote)
+
+        return quote_list
