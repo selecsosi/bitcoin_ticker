@@ -4,6 +4,8 @@ from datetime import timedelta
 from celery.task import PeriodicTask
 from .models import Exchange, ExchangeEndpoint
 from .api.client import MtGoxExchangeMoneyFastTickerClient, MtGoxExchangeMoneyTickerClient
+from ticker.api.client import BitstampExchangeTickerClient
+
 
 class MtGoxExchangeMoneyFastTickerTask(PeriodicTask):
     run_every = timedelta(minutes=1)
@@ -35,8 +37,8 @@ class BitstampExchangeTickerTask(PeriodicTask):
     def run(self, **kwargs):
         exchange = Exchange.objects.get(name="Bitstamp")
         ee = ExchangeEndpoint.objects.get(exchange=exchange, name="Ticker")
-        mgerc = MtGoxExchangeMoneyTickerClient(ee)
-        quote_list = mgerc.request_exchange_quotes()
+        bsetc = BitstampExchangeTickerClient(ee)
+        quote_list = bsetc.request_exchange_quotes()
         for quote in quote_list:
             quote.save()
 

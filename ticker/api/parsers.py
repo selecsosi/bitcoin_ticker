@@ -56,7 +56,7 @@ class MtGoxExchangeMoneyTickerParser(BaseExchangeParser):
         model = json.loads(response_json)
         quote_list = []
         if isinstance(model, dict):
-            if model["result"] == "success":
+            if model.get("result", None) == "success":
                 local_tz = pytz.timezone(settings.TIME_ZONE)
                 timestamp_dt = timezone.now()
                 if "now" in model:
