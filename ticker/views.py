@@ -4,13 +4,12 @@ import calendar
 
 from ticker.models import Quote
 
-
 from django.views.decorators.cache import cache_page
 
 @cache_page(60)
 def quotes(request):
-    ql_sell = Quote.objects.filter(quote_type__name="sell").order_by('-modified')[:500]
-    ql_buy = Quote.objects.filter(quote_type__name="buy").order_by('-modified')[:500]
+    ql_sell = Quote.objects.filter(quote_type__name="sell").order_by('-modified')[:2000]
+    ql_buy = Quote.objects.filter(quote_type__name="buy").order_by('-modified')[:2000]
 
     x_sell_data = [calendar.timegm(x.modified.timetuple()) * 1000 for x in ql_sell]
     ydata1 = [float(x.price) for x in ql_sell]

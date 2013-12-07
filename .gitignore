@@ -39,5 +39,5 @@ nosetests.xml
 
 *.ipynb
 .ipynb_checkpoints/
-celerybeat-schedule
+celerybeat*
 bower.json
