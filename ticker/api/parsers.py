@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 from datetime import datetime
 import pytz
@@ -90,10 +91,11 @@ class BitstampExchangeTickerParser(BaseExchangeParser):
         "bid": "buy",
         "low": "low",
         "ask": "sell",
+        "volume": "vol",
     }
 
 
-    quantity_quote_keys = ('vol', )
+    quantity_quote_keys = ('volume', )
 
     def parse_response(self, response_json):
         model = json.loads(response_json)
@@ -114,9 +116,9 @@ class BitstampExchangeTickerParser(BaseExchangeParser):
                     quote.from_currency = self.exchange_endpoint.from_currency
                     quote.to_currency = self.exchange_endpoint.to_currency
                     if key in self.quantity_quote_keys:
-                        quote.quantity = model[key]
+                        quote.quantity = Decimal(model[key])
                     else:
-                        quote.price = model[key]
+                        quote.price = Decimal(model[key])
                     quote.exchange_timestamp = timestamp_dt
                     quote_list.append(quote)
 
