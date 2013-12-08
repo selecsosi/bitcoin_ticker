@@ -31,7 +31,7 @@ def quotes(request, exchange_name="mtgox"):
     chartdata = {
         'name1': 'sell', 'x1': x_sell, 'y1': y_sell,
         'name2': 'buy', 'x2': x_buy, 'y2': y_buy,
-        'name3': 'buy', 'x3': x_last, 'y3': y_buy,
+        'name3': 'last', 'x3': x_last, 'y3': y_last,
 
     }
 
