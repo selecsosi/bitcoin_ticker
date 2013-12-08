@@ -126,14 +126,16 @@ class BitstampExchangeTickerParser(BaseExchangeParser):
 
 class Btc_eExchangeBtcUsdTickerParser(BaseExchangeParser):
 
-    quantity_quote_keys = ('vol', 'vol_cur')
+    quantity_quote_keys = ('vol', 'vol_cur', )
 
     def parse_response(self, response_json):
         model = json.loads(response_json)
+        print model
         quote_list = []
         if isinstance(model, dict):
             if "ticker" in model:
                 model = model["ticker"]
+                print model
                 local_tz = pytz.timezone(settings.TIME_ZONE)
                 timestamp_dt = timezone.now()
                 if "updated" in model:
@@ -143,6 +145,7 @@ class Btc_eExchangeBtcUsdTickerParser(BaseExchangeParser):
                 for key in model.keys():
                     if key in self.quote_types:
                         quote_type = self.quote_types[key]
+                        print quote_type
                         quote = Quote()
                         quote.quote_type = quote_type
                         quote.exchange_endpoint = self.exchange_endpoint
