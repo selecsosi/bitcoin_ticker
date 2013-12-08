@@ -48,7 +48,9 @@ class Btc_eExchangeBtcUsdTickerTask(PeriodicTask):
 
     def run(self, **kwargs):
         exchange = Exchange.objects.get(name="Btc-e")
+        print exchange
         ee = ExchangeEndpoint.objects.get(exchange=exchange, name="BTC:USD Ticker")
+        print ee
         btceqc = Btc_eExchangeBtcUsdQuoteClient(ee)
         quote_list = btceqc.request_exchange_quotes()
         for quote in quote_list:
