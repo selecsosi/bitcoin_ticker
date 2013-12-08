@@ -16,7 +16,7 @@ def quotes(request, exchange_name="mtgox"):
     ql_sell = Quote.objects.filter(quote_type__name="sell", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
     ql_buy = Quote.objects.filter(quote_type__name="buy", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
     ql_last = Quote.objects.filter(quote_type__name="last", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
-    ql_vol = Quote.objects.filter(quote_type__name__contains="vol", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
+    ql_vol = Quote.objects.filter(quote_type__name__contains="vol", exchange_endpoint__exchange=e).order_by('-modified')[:200]
 
     x_sell = [calendar.timegm(x.modified.timetuple()) * 1000 for x in ql_sell]
     x_buy = [calendar.timegm(x.modified.timetuple()) * 1000 for x in ql_buy]
@@ -25,7 +25,7 @@ def quotes(request, exchange_name="mtgox"):
     y_sell = [float(x.price) for x in ql_sell]
     y_buy = [float(x.price) for x in ql_buy]
     y_last = [float(x.price) for x in ql_last]
-    y_vol = [float(x.price) for x in ql_vol]
+    y_vol = [float(x.quantity) for x in ql_vol]
 
 
     # tooltip_date = "%d %b %Y %H:%M:%S %p"
