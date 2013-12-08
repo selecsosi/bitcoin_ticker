@@ -2,14 +2,15 @@
 from django.shortcuts import render_to_response
 import calendar
 
-from ticker.models import Quote
+from ticker.models import Quote, Exchange
 
 from django.views.decorators.cache import cache_page
 
 @cache_page(60)
 def quotes(request):
-    ql_sell = Quote.objects.filter(quote_type__name="sell", exchange_endpoint__name="MtGox").order_by('-modified')[:2000]
-    ql_buy = Quote.objects.filter(quote_type__name="buy", exchange_endpoint__name="MtGox").order_by('-modified')[:2000]
+    e = Exchange.objects.get(name="MtGox")
+    ql_sell = Quote.objects.filter(quote_type__name="sell", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
+    ql_buy = Quote.objects.filter(quote_type__name="buy", exchange_endpoint__exchange=e).order_by('-modified')[:2000]
 
     x_sell_data = [calendar.timegm(x.modified.timetuple()) * 1000 for x in ql_sell]
     ydata1 = [float(x.price) for x in ql_sell]
